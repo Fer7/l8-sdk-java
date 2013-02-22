@@ -47,6 +47,10 @@ public class L8Manager
 			l8.clearMatrix();
 			l8.setLED(0, 3, Color.CYAN);
 			
+			l8.readLED(0, 3);
+			
+			l8.clearLED(0, 3);
+			
 			Color[][] matrix = new Color[8][8];
 			for (int i = 0; i < matrix.length; i++) {
 				for (int j = 0; j < matrix[i].length; j++) {
@@ -55,11 +59,19 @@ public class L8Manager
 			}
 			l8.setMatrix(matrix);
 			
+			l8.readMatrix();
+			
+			l8.setSuperLED(Color.BLUE);
+			
+			l8.readSuperLED();
+			
+			l8.clearSuperLED();
+			
 			l8.enableSensor(Sensor.AMBIENTLIGHT);
 
 			l8.disableSensor(Sensor.PROXIMITY);
 
-			L8Manager.logger.info("read sensor: " + l8.readSensor(Sensor.AMBIENTLIGHT));
+			L8Manager.logger.info("read sensor: " + l8.readSensor(Sensor.ORIENTATION));
 			
 			L8Manager.logger.info("sensor enabled? " + l8.isSensorEnabled(Sensor.AMBIENTLIGHT));
 			

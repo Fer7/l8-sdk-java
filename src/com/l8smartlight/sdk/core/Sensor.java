@@ -6,7 +6,8 @@ public class Sensor
 	public static Sensor TEMPERATURE = new Sensor("temperature_sensor");  
 	public static Sensor NOISE = new Sensor("noise_sensor");  
 	public static Sensor AMBIENTLIGHT = new Sensor("ambientlight_sensor");  
-	public static Sensor ACCELERATION = new Sensor("acceleration_sensor");  
+	public static Sensor ACCELERATION = new Sensor("acceleration_sensor");
+	public static Sensor ORIENTATION = new Sensor("orientation_sensor");
 	
 	protected String name;
 	protected String value;

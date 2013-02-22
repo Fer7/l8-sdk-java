@@ -23,17 +23,53 @@ public class BluetoothL8 implements L8
 	}
 
 	@Override
+	public void clearMatrix() throws L8Exception 
+	{
+		System.out.println("bluetooth::clearMatrix");
+	}
+	
+	@Override
+	public Color[][] readMatrix() throws L8Exception 
+	{
+		System.out.println("bluetooth::readMatrix");
+		return null;
+	}
+	
+	@Override
 	public void setLED(int x, int y, Color color) throws L8Exception 
 	{
 		System.out.println("bluetooth::setLED");
 	}
 
 	@Override
-	public void clearMatrix() throws L8Exception 
+	public void clearLED(int x, int y) throws L8Exception 
 	{
-		System.out.println("bluetooth::clearMatrix");
+		System.out.println("bluetooth::clearLED");
 	}
 
+	@Override
+	public Color readLED(int x, int y) throws L8Exception 
+	{
+		System.out.println("bluetooth::readLED");
+		return null;
+	}
+	
+	@Override
+	public void setSuperLED(Color color) throws L8Exception {
+		System.out.println("bluetooth::setSuperLED");
+	}
+	
+	@Override
+	public void clearSuperLED() throws L8Exception {
+		System.out.println("bluetooth::clearSuperLED");
+	}	
+	
+	@Override
+	public Color readSuperLED() throws L8Exception {
+		System.out.println("bluetooth::readSuperLED");
+		return null;
+	}
+	
 	@Override
 	public void enableSensor(Sensor sensor) throws L8Exception 
 	{
