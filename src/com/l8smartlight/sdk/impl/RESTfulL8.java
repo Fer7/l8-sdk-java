@@ -5,7 +5,6 @@ import java.awt.Color;
 import org.json.simple.JSONObject;
 
 import com.l8smartlight.sdk.L8;
-import com.l8smartlight.sdk.core.ConnectionType;
 import com.l8smartlight.sdk.core.L8Exception;
 import com.l8smartlight.sdk.core.Sensor;
 
@@ -26,12 +25,36 @@ public class RESTfulL8 implements L8
 		return "#" + redGreenBlue; 
 	}
 	
-	protected Color readColor(String color) 
+	protected Color parseColor(String color) 
 	{
 		Integer red = Integer.valueOf(color.substring(1, 2), 16);
 		Integer green = Integer.valueOf(color.substring(3, 5), 16);
 		Integer blue = Integer.valueOf(color.substring(5), 16);
 		return new Color(red, green, blue);
+	}
+	
+	protected Color readColor(JSONObject json, String name)
+	{
+		String stringValue = (String)json.get(name);
+		return parseColor(stringValue);
+	}
+	
+	protected float readFloat(JSONObject json, String name)
+	{
+		String stringValue = (String)json.get(name);
+		float floatValue = Double.valueOf(stringValue).floatValue();
+		return floatValue;
+	}
+	
+	protected int readInt(JSONObject json, String name)
+	{
+		return (int)readFloat(json, name);
+	}
+	
+	protected boolean readBool(JSONObject json, String name)
+	{
+		String value = (String)json.get(name);
+		return value.equals("1");		
 	}
 	
 	public RESTfulL8() throws L8Exception 
@@ -117,8 +140,7 @@ public class RESTfulL8 implements L8
 				for (int i = 0; i < 8; i++) {
 					for (int j = 0; j < 8; j++) {
 						String ledName = "led" + i + "" + j;
-						String value = (String)json.get(ledName);
-						matrix[i][j] = readColor(value);
+						matrix[i][j] = readColor(json, ledName);
 					}
 				}
 				return matrix;
@@ -159,8 +181,7 @@ public class RESTfulL8 implements L8
 			Response response = this.client.get("/l8s/" + this.simulat8rToken + "/led/" + ledName);
 			if (response.getCode() == 200) {
 				JSONObject json = (JSONObject)response.getJSON();
-				String value = (String)json.get(ledName);
-				return readColor(value);
+				return readColor(json, ledName);
 			}		
 			throw new L8Exception("Error reading simulat8r LED {" + x + "," + y + "}");
 		} catch (Exception e) {
@@ -197,8 +218,7 @@ public class RESTfulL8 implements L8
 			Response response = this.client.get("/l8s/" + this.simulat8rToken + "/superled");
 			if (response.getCode() == 200) {
 				JSONObject json = (JSONObject)response.getJSON();
-				String value = (String)json.get("superled");
-				return readColor(value);
+				return readColor(json, "superled");
 			}		
 			throw new L8Exception("Error reading simulat8r superLED");
 		} catch (Exception e) {
@@ -212,7 +232,7 @@ public class RESTfulL8 implements L8
 	{
 		try {
 			JSONObject message = new JSONObject();
-			message.put(sensor.getName()+ "_enabled", "1");
+			message.put(sensor.getName()+ "_sensor_enabled", "1");
 			Response response = this.client.put("/l8s/" + this.simulat8rToken, message);
 			if (response.getCode() != 200) {
 				throw new L8Exception("Error enabling simulat8r sensor");
@@ -228,7 +248,7 @@ public class RESTfulL8 implements L8
 	{
 		try {
 			JSONObject message = new JSONObject();
-			message.put(sensor.getName()+ "_enabled", "0");
+			message.put(sensor.getName()+ "_sensor_enabled", "0");
 			Response response = this.client.put("/l8s/" + this.simulat8rToken, message);
 			if (response.getCode() != 200) {
 				throw new L8Exception("Error disabling simulat8r sensor");
@@ -239,14 +259,40 @@ public class RESTfulL8 implements L8
 	}
 	
 	@Override	
-	public float readSensor(Sensor sensor) throws L8Exception 
+	public Sensor.Status readSensor(Sensor sensor) throws L8Exception 
 	{
 		try {
 			Response response = this.client.get("/l8s/" + this.simulat8rToken + "/sensor/" + sensor.getName());
 			if (response.getCode() == 200) {
 				JSONObject json = (JSONObject)response.getJSON();
-				String value = (String)json.get(sensor.getName() + "_data");
-				return Double.valueOf(value).floatValue();
+				
+				if (sensor.equals(Sensor.TEMPERATURE)) {
+					float celsiusValue = readFloat(json, sensor.getName() + "_celsius_data");
+					float fahrenheitValue = readFloat(json, sensor.getName() + "_fahrenheit_data");
+					return new Sensor.TemperatureStatus(celsiusValue, fahrenheitValue);
+				}
+				if (sensor.equals(Sensor.ACCELERATION)) {
+
+					float rawX = readFloat(json, sensor.getName() + "_sensor_data_rawX");
+					float rawY = readFloat(json, sensor.getName() + "_sensor_data_rawY");
+					float rawZ = readFloat(json, sensor.getName() + "_sensor_data_rawZ");
+					int shake = readInt(json, sensor.getName() + "_sensor_data_shake");
+					int orientation = readInt(json, sensor.getName() + "_sensor_data_orientation");
+					
+					return new Sensor.AccelerationStatus(rawX, rawY, rawZ, shake, orientation);
+				}
+				
+				int value = readInt(json, sensor.getName() + "_data");
+				if (sensor.equals(Sensor.AMBIENTLIGHT)) {
+					return new Sensor.AmbientLightStatus(value);
+				}
+				if (sensor.equals(Sensor.PROXIMITY)) {
+					return new Sensor.ProximityStatus(value);
+				}
+				if (sensor.equals(Sensor.NOISE)) {
+					return new Sensor.NoiseStatus(value);
+				}
+				return new Sensor.Status();
 			}		
 			throw new L8Exception("Error reading simulat8r sensor");
 		} catch (Exception e) {
@@ -261,8 +307,7 @@ public class RESTfulL8 implements L8
 			Response response = this.client.get("/l8s/" + this.simulat8rToken + "/sensor/" + sensor.getName() + "/enabled");
 			if (response.getCode() == 200) {
 				JSONObject json = (JSONObject)response.getJSON();
-				String value = (String)json.get(sensor.getName() + "_enabled");
-				return value.equals("1");
+				return readBool(json, sensor.getName() + "_enabled");
 			}		
 			throw new L8Exception("Error querying simulat8r sensor");
 		} catch (Exception e) {
@@ -277,8 +322,7 @@ public class RESTfulL8 implements L8
 			Response response = this.client.get("/l8s/" + this.simulat8rToken + "/bluetooth_enabled");
 			if (response.getCode() == 200) {
 				JSONObject json = (JSONObject)response.getJSON();
-				String value = (String)json.get("bluetooth_enabled");
-				return value.equals("1");
+				return readBool(json, "bluetooth_enabled");
 			}		
 			throw new L8Exception("Error querying simulat8r bluetooth");
 		} catch (Exception e) {
@@ -287,19 +331,86 @@ public class RESTfulL8 implements L8
 	}
 	
 	@Override	
-	public float getBatteryStatus() throws L8Exception 
+	public int getBatteryStatus() throws L8Exception 
 	{
 		try {
 			Response response = this.client.get("/l8s/" + this.simulat8rToken + "/battery_status");
 			if (response.getCode() == 200) {
 				JSONObject json = (JSONObject)response.getJSON();
-				String value = (String)json.get("battery_status");
-				return Double.valueOf(value).floatValue();
+				return readInt(json, "battery_status");
 			}		
 			throw new L8Exception("Error reading simulat8r battery status");
 		} catch (Exception e) {
 			throw new L8Exception(e);
 		}
 	}
+	
+	@Override
+	public int getButton() throws L8Exception
+	{
+		try {
+			Response response = this.client.get("/l8s/" + this.simulat8rToken + "/button");
+			if (response.getCode() == 200) {
+				JSONObject json = (JSONObject)response.getJSON();
+				return readInt(json, "button");
+			}		
+			throw new L8Exception("Error reading simulat8r button");
+		} catch (Exception e) {
+			throw new L8Exception(e);
+		}
+	}
+	
+	@Override
+	public int getMemorySize() throws L8Exception
+	{
+		try {
+			Response response = this.client.get("/l8s/" + this.simulat8rToken + "/memory_size");
+			if (response.getCode() == 200) {
+				JSONObject json = (JSONObject)response.getJSON();
+				return readInt(json, "memory_size");
+			}		
+			throw new L8Exception("Error reading simulat8r memory size");
+		} catch (Exception e) {
+			throw new L8Exception(e);
+		}
+	}
+
+	@Override
+	public int getFreeMemory() throws L8Exception
+	{
+		try {
+			Response response = this.client.get("/l8s/" + this.simulat8rToken + "/free_memory");
+			if (response.getCode() == 200) {
+				JSONObject json = (JSONObject)response.getJSON();
+				return readInt(json, "free_memory");
+			}		
+			throw new L8Exception("Error reading simulat8r free memory");
+		} catch (Exception e) {
+			throw new L8Exception(e);
+		}		
+	}
+	
+	@Override
+	public String getId() throws L8Exception
+	{
+		return simulat8rToken;
+	}
+	
+	@Override
+	public L8.Version getVersion() throws L8Exception
+	{
+		try {
+			Response response = this.client.get("/l8s/" + this.simulat8rToken + "/version");
+			if (response.getCode() == 200) {
+				JSONObject json = (JSONObject)response.getJSON();
+				int hardwareVersion = readInt(json, "hardware_version");
+				int softwareVersion = readInt(json, "software_version");
+				return new L8.Version(hardwareVersion, softwareVersion);
+			}		
+			throw new L8Exception("Error reading simulat8r version");
+		} catch (Exception e) {
+			throw new L8Exception(e);
+		}		
+	}		
 
 }

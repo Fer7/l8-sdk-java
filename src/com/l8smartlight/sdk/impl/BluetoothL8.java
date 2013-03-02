@@ -3,7 +3,6 @@ package com.l8smartlight.sdk.impl;
 import java.awt.Color;
 
 import com.l8smartlight.sdk.L8;
-import com.l8smartlight.sdk.core.ConnectionType;
 import com.l8smartlight.sdk.core.L8Exception;
 import com.l8smartlight.sdk.core.Sensor;
 
@@ -83,10 +82,10 @@ public class BluetoothL8 implements L8
 	}
 	
 	@Override
-	public float readSensor(Sensor sensor) throws L8Exception
+	public Sensor.Status readSensor(Sensor sensor) throws L8Exception
 	{
 		System.out.println("bluetooth::readSensor");
-		return 0.0f;
+		return new Sensor.TemperatureStatus(0.0f, 0.0f);
 	}
 
 	@Override
@@ -104,10 +103,45 @@ public class BluetoothL8 implements L8
 	}
 	
 	@Override
-	public float getBatteryStatus() throws L8Exception
+	public int getBatteryStatus() throws L8Exception
 	{
 		System.out.println("bluetooth::getBatteryStatus");
-		return 0.0f;
+		return 0;
+	}
+	
+	@Override
+	public int getButton() throws L8Exception
+	{
+		System.out.println("bluetooth::getButton");
+		return 0;		
+	}
+	
+	@Override
+	public int getMemorySize() throws L8Exception
+	{
+		System.out.println("bluetooth::getMemorySize");
+		return 0;		
+	}
+
+	@Override
+	public int getFreeMemory() throws L8Exception
+	{
+		System.out.println("bluetooth::getFreeMemory");
+		return 0;		
+	}
+	
+	@Override
+	public String getId() throws L8Exception
+	{
+		System.out.println("bluetooth::getId");
+		return null;
+	}
+	
+	@Override
+	public L8.Version getVersion() throws L8Exception
+	{
+		System.out.println("bluetooth::getVersion");
+		return null;
 	}
 	
 }

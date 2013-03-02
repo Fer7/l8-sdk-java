@@ -3,7 +3,6 @@ package com.l8smartlight.sdk.impl;
 import java.awt.Color;
 
 import com.l8smartlight.sdk.L8;
-import com.l8smartlight.sdk.core.ConnectionType;
 import com.l8smartlight.sdk.core.L8Exception;
 import com.l8smartlight.sdk.core.Sensor;
 
@@ -79,35 +78,70 @@ public class USBL8 implements L8
 	@Override	
 	public void disableSensor(Sensor sensor) throws L8Exception
 	{
-		System.out.println("bluetooth::disableSensor");
+		System.out.println("usb::disableSensor");
 	}
 	
 	@Override	
-	public float readSensor(Sensor sensor) throws L8Exception
+	public Sensor.Status readSensor(Sensor sensor) throws L8Exception
 	{
-		System.out.println("bluetooth::readSensor");
-		return 0.0f;
+		System.out.println("usb::readSensor");
+		return new Sensor.TemperatureStatus(0.0f, 0.0f);
 	}
 
 	@Override	
 	public boolean isSensorEnabled(Sensor sensor) throws L8Exception
 	{
-		System.out.println("bluetooth::isSensorEnabled");
+		System.out.println("usb::isSensorEnabled");
 		return true;
 	}
 	
 	@Override	
 	public boolean isBluetoothEnabled() throws L8Exception
 	{
-		System.out.println("bluetooth::isBluetoothEnabled");
+		System.out.println("usb::isBluetoothEnabled");
 		return false;
 	}
 	
-	@Override	
-	public float getBatteryStatus() throws L8Exception
+	@Override
+	public int getBatteryStatus() throws L8Exception
 	{
-		System.out.println("bluetooth::getBatteryStatus");
-		return 0.0f;
+		System.out.println("usb::getBatteryStatus");
+		return 0;
 	}
+	
+	@Override
+	public int getButton() throws L8Exception
+	{
+		System.out.println("usb::getButton");
+		return 0;		
+	}
+	
+	@Override
+	public int getMemorySize() throws L8Exception
+	{
+		System.out.println("usb::getMemorySize");
+		return 0;		
+	}
+
+	@Override
+	public int getFreeMemory() throws L8Exception
+	{
+		System.out.println("usb::getFreeMemory");
+		return 0;		
+	}
+	
+	@Override
+	public String getId() throws L8Exception
+	{
+		System.out.println("usb::getId");
+		return null;
+	}
+	
+	@Override
+	public L8.Version getVersion() throws L8Exception
+	{
+		System.out.println("usb::getVersion");
+		return null;
+	}	
 	
 }

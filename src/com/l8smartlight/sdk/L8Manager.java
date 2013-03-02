@@ -71,9 +71,14 @@ public class L8Manager
 
 			l8.disableSensor(Sensor.PROXIMITY);
 
-			L8Manager.logger.info("read sensor: " + l8.readSensor(Sensor.ORIENTATION));
+			Sensor.TemperatureStatus temperature = (Sensor.TemperatureStatus)l8.readSensor(Sensor.TEMPERATURE);
+			L8Manager.logger.info("read temperature sensor: " + temperature);
 			
-			L8Manager.logger.info("sensor enabled? " + l8.isSensorEnabled(Sensor.AMBIENTLIGHT));
+			Sensor.ProximityStatus proximity = (Sensor.ProximityStatus)l8.readSensor(Sensor.PROXIMITY);
+			L8Manager.logger.info("read proximity sensor: " + proximity);
+
+			Sensor.AccelerationStatus acceleration = (Sensor.AccelerationStatus)l8.readSensor(Sensor.ACCELERATION);
+			L8Manager.logger.info("read acceleration sensor: " + acceleration);			
 			
 			L8Manager.logger.info("bluetooth enabled? " + l8.isBluetoothEnabled());
 			
@@ -82,7 +87,17 @@ public class L8Manager
 			l8.setLED(4, 5, Color.LIGHT_GRAY);
 			l8.setLED(7, 6, Color.BLUE);
 			l8.setLED(1, 3, Color.GREEN);
-
+			
+			l8.getButton();
+			
+			l8.getMemorySize();
+			
+			l8.getFreeMemory();
+			
+			l8.getVersion();
+			
+			L8Manager.logger.info("id: " + l8.getId());
+			
 		} catch (L8Exception e) {
 			e.printStackTrace();
 		}
