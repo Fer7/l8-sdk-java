@@ -1,6 +1,7 @@
 package com.l8smartlight.sdk;
 
 import java.awt.Color;
+import java.util.List;
 
 import com.l8smartlight.sdk.core.L8Exception;
 import com.l8smartlight.sdk.core.Sensor;
@@ -52,6 +53,58 @@ public interface L8
 		}
 	}	
 	
+	public static class Frame
+	{
+		protected Color[][] matrix;
+		protected int duration;
+		
+		public Color[][] getMatrix() 
+		{
+			return matrix;
+		}
+		
+		public void setMatrix(Color[][] matrix) 
+		{
+			this.matrix = matrix;
+		}
+		
+		public int getDuration() 
+		{
+			return duration;
+		}
+		
+		public void setDuration(int duration) 
+		{
+			this.duration = duration;
+		}
+		
+		public Frame(Color[][] matrix, int duration)
+		{
+			this.matrix = matrix;
+			this.duration = duration;
+		}
+	}
+	
+	public static class Animation
+	{
+		protected List<Frame> frames;
+
+		public List<Frame> getFrames() 
+		{
+			return frames;
+		}
+
+		public void setFrames(List<Frame> frames) 
+		{
+			this.frames = frames;
+		}
+		
+		public Animation(List<Frame> frames)
+		{
+			this.frames = frames;
+		}
+	}
+	
 	public void setMatrix(Color[][] colorMatrix) throws L8Exception;
 		
 	public void clearMatrix() throws L8Exception;
@@ -91,4 +144,7 @@ public interface L8
 	public String getId() throws L8Exception;
 	
 	public L8.Version getVersion() throws L8Exception;
+	
+	public void setAnimation(Animation animation) throws L8Exception;
+	
 }

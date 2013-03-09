@@ -57,6 +57,32 @@ public class RESTfulL8 implements L8
 		return value.equals("1");		
 	}
 	
+	protected String join(String[] input, String delimiter)
+	{
+	    StringBuilder sb = new StringBuilder();
+	    for (String value : input) {
+	        sb.append(value);
+	        sb.append(delimiter);
+	    }
+	    int length = sb.length();
+	    if (length > 0) {
+	        sb.setLength(length - delimiter.length());
+	    }
+	    return sb.toString();
+	}	
+	
+	protected String printMatrix(Color[][] matrix)
+	{
+		String[] rowColors =  new String[matrix.length*matrix.length];
+		int idx = 0;
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				rowColors[idx++] = printColor(matrix[i][j]);
+			}
+		}
+		return join(rowColors, "-");	
+	}
+	
 	public RESTfulL8() throws L8Exception 
 	{
 		try {
@@ -98,6 +124,10 @@ public class RESTfulL8 implements L8
 				for (int j = 0; j < colorMatrix.length; j++) {
 					message.put("led" + i + j, printColor(colorMatrix[i][j]));
 				}
+			}
+			for (int i = 0; i < 8; i++) {
+				message.put("frame" + i, "");
+				message.put("frame" + i + "_duration", 0);
 			}
 			Response response = this.client.put("/l8s/" + this.simulat8rToken, message);
 			if (response.getCode() != 200) {
@@ -411,6 +441,31 @@ public class RESTfulL8 implements L8
 		} catch (Exception e) {
 			throw new L8Exception(e);
 		}		
-	}		
-
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public void setAnimation(L8.Animation animation) throws L8Exception
+	{
+		try {
+			JSONObject message = new JSONObject();
+			for (int i = 0; i < 8; i++) {
+				if (i < animation.getFrames().size()) {
+					L8.Frame frame = animation.getFrames().get(i);
+					message.put("frame" + i, printMatrix(frame.getMatrix()));
+					message.put("frame" + i + "_duration", frame.getDuration());
+				} else {
+					message.put("frame" + i, "");
+					message.put("frame" + i + "_duration", 0);
+				}
+			}
+			Response response = this.client.put("/l8s/" + this.simulat8rToken, message);
+			if (response.getCode() != 200) {
+				throw new L8Exception("Error setting animation");
+			}
+		} catch (Exception e) {
+			throw new L8Exception(e);
+		}
+	}	
+	
 }

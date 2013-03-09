@@ -98,6 +98,39 @@ public class L8Manager
 			
 			L8Manager.logger.info("id: " + l8.getId());
 			
+			Color[][] matrix0 = new Color[8][8];
+			for (int i = 0; i < matrix0.length; i++) {
+				for (int j = 0; j < matrix0[i].length; j++) {
+					matrix0[i][j] = Color.RED;
+				}
+			}
+			L8.Frame frame0 = new L8.Frame(matrix0, 100);
+
+			Color[][] matrix1 = new Color[8][8];
+			for (int i = 0; i < matrix1.length; i++) {
+				for (int j = 0; j < matrix1[i].length; j++) {
+					matrix1[i][j] = Color.YELLOW;
+				}
+			}			
+			L8.Frame frame1 = new L8.Frame(matrix1, 200);
+			
+			Color[][] matrix2 = new Color[8][8];
+			for (int i = 0; i < matrix2.length; i++) {
+				for (int j = 0; j < matrix2[i].length; j++) {
+					matrix2[i][j] = Color.GREEN;
+				}
+			}			
+			L8.Frame frame2 = new L8.Frame(matrix2, 400);
+			
+			
+			List<L8.Frame> frames = new ArrayList<L8.Frame>();
+			frames.add(frame0);
+			frames.add(frame1);
+			frames.add(frame2);
+			L8.Animation animation = new L8.Animation(frames);
+			l8.setAnimation(animation);
+			
+			
 		} catch (L8Exception e) {
 			e.printStackTrace();
 		}

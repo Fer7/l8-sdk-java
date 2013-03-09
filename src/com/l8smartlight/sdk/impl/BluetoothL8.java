@@ -144,4 +144,10 @@ public class BluetoothL8 implements L8
 		return null;
 	}
 	
+	@Override
+	public void setAnimation(L8.Animation animation) throws L8Exception
+	{
+		System.out.println("bluetooth::setAnimation");
+	}
+	
 }
