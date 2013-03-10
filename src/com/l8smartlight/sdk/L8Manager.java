@@ -15,22 +15,16 @@ public class L8Manager
 {
 	private static Logger logger = LogManager.getLogger(L8Manager.class.getName());	
 	
-	public static List<L8> discoverL8s() 
+	public static List<L8> discoverL8s() throws L8Exception
 	{
 		List<L8> foundL8s = new ArrayList<>();
 
-		// TODO: Busca en las proximidades todos los L8s disponibles, sean del tipo que sean.
-		// 1. Primero por USB.
-		// 2. Por Bluetooth.
-		
-		/*
-		// TODO: Algún parámetro de configuración debe definir si se permite o no devolver uno simulado.
-		boolean allowEmulation = true;
-		if (allowEmulation && foundL8s.size() == 0) {
+		// 1. Look for L8s connected via USB port
+		// 2. Look for L8s connected via bluetooth
+		// 3. If no L8s found, emulate a device with the RESTFul API.
+		if (foundL8s.size() == 0) {
 			foundL8s.add(L8Manager.createEmulatedL8());
 		}
-		*/
-		
 		return foundL8s;
 	}
 	
