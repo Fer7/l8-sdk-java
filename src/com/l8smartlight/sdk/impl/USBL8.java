@@ -1,10 +1,9 @@
 package com.l8smartlight.sdk.impl;
 
-import java.awt.Color;
-
 import com.l8smartlight.sdk.L8;
 import com.l8smartlight.sdk.core.L8Exception;
 import com.l8smartlight.sdk.core.Sensor;
+import com.l8smartlight.sdk.core.Color;
 
 public class USBL8 implements L8 
 {
@@ -148,6 +147,13 @@ public class USBL8 implements L8
 	public void setAnimation(L8.Animation animation) throws L8Exception
 	{
 		System.out.println("usb::setAnimation");
-	}	
+	}
+	
+	@Override
+	public String getConnectionURL() throws L8Exception 
+	{
+		System.out.println("usb::getConnectionURL");
+		return null;
+	}
 	
 }

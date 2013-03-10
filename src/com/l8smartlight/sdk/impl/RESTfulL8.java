@@ -1,12 +1,11 @@
 package com.l8smartlight.sdk.impl;
 
-import java.awt.Color;
-
 import org.json.simple.JSONObject;
 
 import com.l8smartlight.sdk.L8;
 import com.l8smartlight.sdk.core.L8Exception;
 import com.l8smartlight.sdk.core.Sensor;
+import com.l8smartlight.sdk.core.Color;
 
 import es.develappers.rest.RESTfulClient;
 import es.develappers.rest.Response;
@@ -14,7 +13,7 @@ import es.develappers.rest.Response;
 public class RESTfulL8 implements L8 
 {
 	
-	private final String SIMULAT8R_BASE_URL = "http://localhost:8888/l8-server-simulator";
+	private final String SIMULAT8R_BASE_URL = "http://192.168.1.165:8888/l8-server-simulator";
 	private RESTfulClient client = null;
 	private String simulat8rToken = null;
 	
@@ -466,6 +465,12 @@ public class RESTfulL8 implements L8
 		} catch (Exception e) {
 			throw new L8Exception(e);
 		}
-	}	
+	}
+
+	@Override
+	public String getConnectionURL() throws L8Exception
+	{
+		return SIMULAT8R_BASE_URL + "/l8s/" + getId();
+	}
 	
 }

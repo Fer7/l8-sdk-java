@@ -1,10 +1,10 @@
 package com.l8smartlight.sdk;
 
-import java.awt.Color;
 import java.util.List;
 
 import com.l8smartlight.sdk.core.L8Exception;
 import com.l8smartlight.sdk.core.Sensor;
+import com.l8smartlight.sdk.core.Color;
 
 public interface L8 
 {
@@ -146,5 +146,7 @@ public interface L8
 	public L8.Version getVersion() throws L8Exception;
 	
 	public void setAnimation(Animation animation) throws L8Exception;
+	
+	public String getConnectionURL() throws L8Exception;
 	
 }
