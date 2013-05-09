@@ -1,6 +1,6 @@
-package com.l8smartlight.sdk.impl;
+package com.l8smartlight.sdk.usb;
 
-import com.l8smartlight.sdk.L8;
+import com.l8smartlight.sdk.core.L8;
 import com.l8smartlight.sdk.core.L8Exception;
 import com.l8smartlight.sdk.core.Sensor;
 import com.l8smartlight.sdk.core.Color;

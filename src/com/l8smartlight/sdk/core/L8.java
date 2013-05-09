@@ -1,10 +1,7 @@
-package com.l8smartlight.sdk;
+package com.l8smartlight.sdk.core;
 
 import java.util.List;
 
-import com.l8smartlight.sdk.core.L8Exception;
-import com.l8smartlight.sdk.core.Sensor;
-import com.l8smartlight.sdk.core.Color;
 
 public interface L8 
 {
