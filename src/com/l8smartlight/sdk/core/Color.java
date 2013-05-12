@@ -699,6 +699,17 @@ public class Color implements java.io.Serializable {
         int i = intval.intValue();
         return new Color((i >> 16) & 0xFF, (i >> 8) & 0xFF, i & 0xFF);
     }
+    
+	public static Color[][] matrixFromString(String colorMatrix) {
+		String[] splitted = colorMatrix.split("-");
+		Color[][] matrix = new Color[8][8];
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				matrix[i][j] = Color.decode(splitted[i*matrix.length + j]);
+			}
+		}
+		return matrix;
+	}
 
     /**
      * Finds a color in the system properties.
