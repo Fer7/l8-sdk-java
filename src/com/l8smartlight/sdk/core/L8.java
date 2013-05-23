@@ -124,6 +124,8 @@ public interface L8
 
 	public Sensor.Status readSensor(Sensor sensor) throws L8Exception;
 	
+	public List<Sensor.Status> readSensors() throws L8Exception;
+	
 	public void disableSensor(Sensor sensor) throws L8Exception;
 	
 	public boolean isSensorEnabled(Sensor sensor) throws L8Exception;

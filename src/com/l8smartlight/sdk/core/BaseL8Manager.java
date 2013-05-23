@@ -59,6 +59,9 @@ public class BaseL8Manager implements L8Manager {
 
 			l8.disableSensor(Sensor.PROXIMITY);
 
+			List<Sensor.Status> sensors = l8.readSensors();
+			System.out.println(sensors);
+			
 			Sensor.TemperatureStatus temperature = (Sensor.TemperatureStatus)l8.readSensor(Sensor.TEMPERATURE);
 			System.out.println("read temperature sensor: " + temperature);
 			

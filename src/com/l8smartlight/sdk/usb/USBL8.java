@@ -1,9 +1,13 @@
 package com.l8smartlight.sdk.usb;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.l8smartlight.sdk.core.L8;
 import com.l8smartlight.sdk.core.L8Exception;
 import com.l8smartlight.sdk.core.Sensor;
 import com.l8smartlight.sdk.core.Color;
+import com.l8smartlight.sdk.core.Sensor.Status;
 
 public class USBL8 implements L8 
 {
@@ -85,6 +89,12 @@ public class USBL8 implements L8
 	{
 		System.out.println("usb::readSensor");
 		return new Sensor.TemperatureStatus(0.0f, 0.0f);
+	}
+	
+	@Override
+	public List<Status> readSensors() throws L8Exception {
+		System.out.println("usb::readSensors");
+		return new ArrayList<Sensor.Status>();
 	}
 
 	@Override	

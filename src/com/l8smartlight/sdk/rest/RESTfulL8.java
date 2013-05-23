@@ -1,11 +1,14 @@
 package com.l8smartlight.sdk.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.simple.JSONObject;
 
+import com.l8smartlight.sdk.core.Color;
 import com.l8smartlight.sdk.core.L8;
 import com.l8smartlight.sdk.core.L8Exception;
 import com.l8smartlight.sdk.core.Sensor;
-import com.l8smartlight.sdk.core.Color;
 
 import es.develappers.rest.RESTfulClient;
 import es.develappers.rest.Response;
@@ -13,8 +16,8 @@ import es.develappers.rest.Response;
 public class RESTfulL8 implements L8 
 {
 	
-	//private final String SIMULAT8R_BASE_URL = "http://192.168.1.165:8888/l8-server-simulator";
-	private final String SIMULAT8R_BASE_URL = "http://54.228.218.122/l8-server-simulator";
+	private final String SIMULAT8R_BASE_URL = "http://192.168.1.33:8888/l8-server-simulator";
+	//private final String SIMULAT8R_BASE_URL = "http://54.228.218.122/l8-server-simulator";
 	private RESTfulClient client = null;
 	private String simulat8rToken = null;
 	
@@ -325,6 +328,40 @@ public class RESTfulL8 implements L8
 				return new Sensor.Status();
 			}		
 			throw new L8Exception("Error reading simulat8r sensor");
+		} catch (Exception e) {
+			throw new L8Exception(e);
+		}
+	}
+	
+	@Override
+	public List<Sensor.Status> readSensors() throws L8Exception {
+		try {
+			Response response = this.client.get("/l8s/" + this.simulat8rToken + "/sensor");
+			if (response.getCode() == 200) {
+				List<Sensor.Status> sensors = new ArrayList<Sensor.Status>();
+				
+				JSONObject json = (JSONObject)response.getJSON();
+
+				float celsiusValue = readFloat(json, "temperature_celsius_data");
+				float fahrenheitValue = readFloat(json, "temperature_fahrenheit_data");
+				sensors.add(new Sensor.TemperatureStatus(celsiusValue, fahrenheitValue));
+
+				float rawX = readFloat(json, "acceleration_sensor_data_rawX");
+				float rawY = readFloat(json, "acceleration_sensor_data_rawY");
+				float rawZ = readFloat(json, "acceleration_sensor_data_rawZ");
+				int shake = readInt(json, "acceleration_sensor_data_shake");
+				int orientation = readInt(json, "acceleration_sensor_data_orientation");
+				sensors.add(new Sensor.AccelerationStatus(rawX, rawY, rawZ, shake, orientation));
+
+				sensors.add(new Sensor.AmbientLightStatus(readInt(json, "ambientlight_data")));
+				
+				sensors.add(new Sensor.ProximityStatus(readInt(json, "proximity_data")));
+				
+				sensors.add(new Sensor.NoiseStatus(readInt(json, "noise_data")));
+
+				return sensors;
+			}		
+			throw new L8Exception("Error reading simulat8r sensors");
 		} catch (Exception e) {
 			throw new L8Exception(e);
 		}
