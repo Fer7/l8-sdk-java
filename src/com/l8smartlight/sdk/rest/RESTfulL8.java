@@ -90,13 +90,12 @@ public class RESTfulL8 implements L8
 	{
 		try {
 			this.client = new RESTfulClient(SIMUL8TOR_BASE_URL);
-			this.createSimulator();
 		} catch (Exception e) {
 			throw new L8Exception(e);
 		}
 	}
 	
-	protected void createSimulator() throws L8Exception 
+	public void createSimulator() throws L8Exception 
 	{
 		try {
 			Response response = this.client.post("/l8s");
@@ -108,6 +107,20 @@ public class RESTfulL8 implements L8
 			}		
 		} catch (Exception e) {
 			throw new L8Exception(e);
+		}
+	}
+	
+	public L8 reconnectSimulator(String simul8torToken)
+	{
+		this.simul8torToken = simul8torToken;
+		try {
+			Response response = this.client.get("/l8s/" + this.simul8torToken + "/ping");
+			if (response.getCode() == 200) {
+				return this;
+			}
+			return null;
+		} catch (Exception e) {
+			return null;
 		}
 	}
 	

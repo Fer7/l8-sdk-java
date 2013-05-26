@@ -7,12 +7,15 @@ import com.l8smartlight.sdk.rest.RESTfulL8;
 
 public class BaseL8Manager implements L8Manager {
 
-	public List<L8> discoverL8s() throws L8Exception {
+	public L8 reconnectDevice(String deviceId) throws L8Exception
+	{
+		RESTfulL8 l8 = new RESTfulL8();
+		return l8.reconnectSimulator(deviceId);
+	}
+	
+	public List<L8> discoverL8s() throws L8Exception 
+	{
 		List<L8> foundL8s = new ArrayList<L8>();
-		
-		// 1. Look for L8s connected via USB port
-		// 2. Look for L8s connected via bluetooth
-		// 3. If no L8s found, emulate a device with the RESTFul API.
 		if (foundL8s.size() == 0) {
 			foundL8s.add(createEmulatedL8());
 		}
@@ -21,7 +24,9 @@ public class BaseL8Manager implements L8Manager {
 	
 	public L8 createEmulatedL8() throws L8Exception 
 	{
-		return new RESTfulL8();
+		RESTfulL8 l8 = new RESTfulL8();
+		l8.createSimulator();
+		return l8;
 	}
 	
 	///*
@@ -32,6 +37,9 @@ public class BaseL8Manager implements L8Manager {
 			BaseL8Manager l8Manager = new BaseL8Manager();
 			
 			L8 l8 = l8Manager.createEmulatedL8();
+			
+			//L8 l8 = l8Manager.reconnectDevice("4c9b26176af0768e562837eeebdc227d");
+			
 			l8.clearMatrix();
 			l8.setLED(0, 3, Color.CYAN);
 			
