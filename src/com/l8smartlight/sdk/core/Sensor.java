@@ -38,6 +38,20 @@ public class Sensor
 	
 	public static class Status
 	{
+		protected boolean enabled;
+
+		public boolean isEnabled() {
+			return enabled;
+		}
+
+		public void setEnabled(boolean enabled) {
+			this.enabled = enabled;
+		}
+		
+		public Status(boolean enabled) 
+		{
+			this.enabled = enabled;
+		}
 		
 	}
 	
@@ -55,14 +69,15 @@ public class Sensor
 			this.value = value;
 		}
 		
-		public FloatStatus(float value) 
+		public FloatStatus(boolean enabled, float value) 
 		{
+			super(enabled);
 			this.value = value;
 		}
 		
 		public String toString() 
 		{
-			return "{" + value + "}";
+			return "enabled: " + enabled + " {" + value + "}";
 		}		
 	}
 	
@@ -80,14 +95,15 @@ public class Sensor
 			this.value = value;
 		}
 		
-		public IntegerStatus(int value) 
+		public IntegerStatus(boolean enabled, int value) 
 		{
+			super(enabled);
 			this.value = value;
 		}		
 		
 		public String toString() 
 		{
-			return "{" + value + "}";
+			return "enabled: " + enabled + " {" + value + "}";
 		}
 	}
 	
@@ -116,39 +132,40 @@ public class Sensor
 			this.fahrenheitValue = fahrenheitValue;
 		}
 
-		public TemperatureStatus(float celsiusValue, float fahrenheitValue) 
+		public TemperatureStatus(boolean enabled, float celsiusValue, float fahrenheitValue) 
 		{
+			super(enabled);
 			this.celsiusValue = celsiusValue;
 			this.fahrenheitValue = fahrenheitValue;
 		}
 		
 		public String toString() 
 		{
-			return "{" + celsiusValue + " celsius, " + fahrenheitValue + " fahrenheit}";
+			return "enabled: " + enabled + " {" + celsiusValue + " celsius, " + fahrenheitValue + " fahrenheit}";
 		}
 	}
 	
 	public static class AmbientLightStatus extends IntegerStatus
 	{
-		public AmbientLightStatus(int value) 
+		public AmbientLightStatus(boolean enabled, int value) 
 		{
-			super(value);
+			super(enabled, value);
 		}
 	}
 	
 	public static class ProximityStatus extends IntegerStatus
 	{
-		public ProximityStatus(int value) 
+		public ProximityStatus(boolean enabled, int value) 
 		{
-			super(value);
+			super(enabled, value);
 		}
 	}
 	
 	public static class NoiseStatus extends IntegerStatus
 	{
-		public NoiseStatus(int value) 
+		public NoiseStatus(boolean enabled, int value) 
 		{
-			super(value);
+			super(enabled, value);
 		}
 	}
 	
@@ -210,8 +227,9 @@ public class Sensor
 			this.orientation = orientation;
 		}
 
-		public AccelerationStatus(float rawX, float rawY, float rawZ, int shake, int orientation) 
+		public AccelerationStatus(boolean enabled, float rawX, float rawY, float rawZ, int shake, int orientation) 
 		{
+			super(enabled);
 			this.rawX = rawX;
 			this.rawY = rawY;
 			this.rawZ = rawZ;
@@ -221,7 +239,7 @@ public class Sensor
 		
 		public String toString() 
 		{
-			return "{rawX: " + rawX + ", rawY: " + rawY + ", rawZ: " + rawZ + ", shake: " + shake + ", orientation: " + orientation + "}";
+			return "enabled: " + enabled + " {rawX: " + rawX + ", rawY: " + rawY + ", rawZ: " + rawZ + ", shake: " + shake + ", orientation: " + orientation + "}";
 		}
 	}
 	

@@ -88,7 +88,7 @@ public class USBL8 implements L8
 	public Sensor.Status readSensor(Sensor sensor) throws L8Exception
 	{
 		System.out.println("usb::readSensor");
-		return new Sensor.TemperatureStatus(0.0f, 0.0f);
+		return new Sensor.TemperatureStatus(false, 0.0f, 0.0f);
 	}
 	
 	@Override
