@@ -15,9 +15,12 @@ import es.develappers.rest.Response;
 
 public class RESTfulL8 implements L8 
 {
-	
+	// DES:
 	//private final String SIMUL8TOR_BASE_URL = "http://192.168.1.33:8888/l8-server-simulator";
-	private final String SIMUL8TOR_BASE_URL = "http://54.228.218.122/l8-server-simulator";
+	// PRE:
+	//private final String SIMUL8TOR_BASE_URL = "http://54.228.218.122/l8-server-simulator";
+	private final String SIMUL8TOR_BASE_URL = "http://l8pre.develappers.es/l8-server-simulator";
+	
 	private RESTfulClient client = null;
 	private String simul8torToken = null;
 	
