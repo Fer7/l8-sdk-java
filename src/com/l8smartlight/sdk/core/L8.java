@@ -89,6 +89,13 @@ public interface L8
 			this.matrix = matrix;
 			this.duration = duration;
 		}
+		
+		public Frame(Color[][] matrix, Color backLed, int duration)
+		{
+			this.matrix = matrix;
+			this.backLed = backLed;
+			this.duration = duration;
+		}
 	}
 	
 	public static class Animation
