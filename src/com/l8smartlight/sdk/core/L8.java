@@ -54,7 +54,16 @@ public interface L8
 	{
 		protected Color[][] matrix;
 		protected int duration;
+		protected Color backLed;
 		
+		public Color getBackLed() {
+			return backLed;
+		}
+
+		public void setBackLed(Color backLed) {
+			this.backLed = backLed;
+		}
+
 		public Color[][] getMatrix() 
 		{
 			return matrix;
