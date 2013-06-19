@@ -1,4 +1,4 @@
-L8 smartlight java sdk
+L8 smartlight java SDK
 =====
 http://www.l8smartlight.com/sdk/
 
